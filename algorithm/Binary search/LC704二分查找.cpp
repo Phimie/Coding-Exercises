@@ -16,17 +16,17 @@ public:
         while (i <= j)
         {
             int mid = (i + j) / 2;
-            if (target < nums[mid])
+            if (target < nums[mid]) // 当target为最左侧元素时,判断次数为L
             {
                 j = mid - 1;
             }
-            else if (nums[mid] < target)
+            else if (nums[mid] < target) // 当target为最右侧元素时,判断次数为2 * L; (不平衡)
             {
                 i = mid + 1;
             }
             else
             {
-                return mid;
+                return mid; // 最优情况为,target刚好为中间元素,即O(1);
             }
         }
         return -1;
