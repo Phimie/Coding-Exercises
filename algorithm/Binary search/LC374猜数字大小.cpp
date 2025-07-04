@@ -29,6 +29,7 @@ public:
         while (i <= j)
         {
             int mid = i + (j - i) / 2; // i + (j - i) / 2 这个算式避免了i+j的溢出问题
+            // int m = i + ((j - i) >> 1); 右移运算符也可以解决
             if (guess(mid) == -1)
             {
                 j = mid - 1;
