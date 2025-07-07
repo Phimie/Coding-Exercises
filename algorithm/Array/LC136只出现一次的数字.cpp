@@ -6,7 +6,7 @@ class Solution
 public:
     int singleNumber(std::vector<int> &nums)
     {
-        sort(nums.begin(), nums.end()); // 1,2,2,3,3,4,4
+        sort(nums.begin(), nums.end());
         if (nums.size() == 1)
         {
             return nums[0];
