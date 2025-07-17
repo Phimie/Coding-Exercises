@@ -132,6 +132,23 @@ public:
             std::cout << pointer->value << ",";
         }
     }
+
+    // 递归遍历
+    void loop3()
+    {
+        recursion(head->next);
+        std::cout << std::endl;
+    }
+
+    void recursion(Node *cur)
+    {
+        if (cur == nullptr)
+        {
+            return;
+        }
+        std::cout << cur->value << ",";
+        recursion(cur->next);
+    }
 };
 
 int main()
@@ -159,5 +176,6 @@ int main()
     list.loop2();
     std::cout << std::endl;
     std::cout << list.get(2) << std::endl;
+    list.loop3();
     return 0;
 }
