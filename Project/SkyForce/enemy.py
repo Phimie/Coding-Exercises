@@ -12,8 +12,8 @@ class Enemy():
         self.rect.y = random.randint(-300, -self.rect.height)
         self.direction = random.choice([1,-1])
         self.move_tick = 0
-        self.enemy_speed = random.choice([1,2,3])
-        self.enemy_drop_speed = random.choice([1])
+        self.enemy_speed = random.choice([1,2,3,4])
+        self.enemy_drop_speed = random.choice([1,2])
 
     def update(self):
         now = pygame.time.get_ticks()

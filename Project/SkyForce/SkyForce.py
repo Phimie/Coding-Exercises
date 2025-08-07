@@ -110,9 +110,9 @@ class SkyForce:
                 self.enemys.remove(enemy)
                 self._create_enemy()
                 self._create_enemy()
-                self._create_enemy()       
+                self._create_enemy()
 
-        
+
 
 
 
