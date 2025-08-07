@@ -1,25 +1,36 @@
 import pygame
-from pygame.sprite import Sprite
-
-class Enemy(Sprite):
+import random
+class Enemy():
     def __init__(self, sf_game):
         super().__init__()
         self.screen = sf_game.screen
         self.settings = sf_game.settings
-        self.image = pygame.image.load ('images/enemy/enemy.png')
+        self.image = pygame.image.load ('assets/images/enemy/enemy.png').convert_alpha()
         self.rect = self.image.get_rect()
 
-        self.rect.x = self.rect.width
-        self.rect.y = self.rect.height
-
+        self.rect.x = random.randint(100,self.settings.screen_width - self.rect.width)
+        self.rect.y = random.randint(-300, -self.rect.height)
+        self.direction = random.choice([1,-1])
+        self.move_tick = 0
+        self.enemy_speed = random.choice([1,2,3])
+        self.enemy_drop_speed = random.choice([1])
 
     def update(self):
-        self.rect.x += (self.settings.enemy_speed * self.settings.fleet_direction)
+        now = pygame.time.get_ticks()
+        if now - self.move_tick >= 5:
+            self.rect.x += (self.enemy_speed * self.direction)
+            self.rect.y += self.enemy_drop_speed
+            self.move_tick = now
 
     def check_edges(self):
         screen_rect = self.screen.get_rect()
-        if self.rect.right >= screen_rect.right or self.rect.left <= 0 :
+        if self.rect.right >= screen_rect.right:
+            self.rect.right = screen_rect.right - 2
             return True
+        elif self.rect.left <= 0:
+            self.rect.left = 2
+            return True
+        return False
         
 
 

@@ -10,7 +10,7 @@ class Ship:
             图一多就掉帧；加了之后像素格式对齐，blit 变成纯内存拷贝，速度更快。"""
         self.frames = []
         for i in range(8):
-            self.frames.append(pygame.image.load(f'images/ship/Sprite-000{i}.png').convert_alpha())
+            self.frames.append(pygame.image.load(f'assets/images/ship/Sprite-000{i}.png').convert_alpha())
 
         self.image = self.frames[0]
 
@@ -23,6 +23,8 @@ class Ship:
         self.moving_left = False
         self.moving_up = False
         self.moving_down = False
+        self.move_tick = 0
+        
 
     def center_ship(self):
         self.rect.midbottom = self.screen_rect.midbottom
@@ -30,17 +32,18 @@ class Ship:
         self.y = float(self.rect.y)
 
     def update(self):
-
-        self.image = self.frames[(pygame.time.get_ticks() // 80) % 8]
-
-        if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.x += self.settings.ship_speed
-        if self.moving_left and self.rect.left > 0:
-            self.x -= self.settings.ship_speed
-        if self.moving_up and self.rect.top > 0:
-            self.y -= self.settings.ship_speed
-        if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
-            self.y += self.settings.ship_speed
+        self.image = self.frames[(pygame.time.get_ticks() // 40) % 8]
+        now = pygame.time.get_ticks()
+        if now - self.move_tick >= 2:
+            if self.moving_right and self.rect.right < self.screen_rect.right:
+                self.x += self.settings.ship_speed
+            if self.moving_left and self.rect.left > 0:
+                self.x -= self.settings.ship_speed
+            if self.moving_up and self.rect.top > 0:
+                self.y -= self.settings.ship_speed
+            if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
+                self.y += self.settings.ship_speed
+            self.move_tick = now
 
         self.rect.x = self.x
         self.rect.y = self.y

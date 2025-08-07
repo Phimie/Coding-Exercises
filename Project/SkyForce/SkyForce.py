@@ -18,35 +18,34 @@ class SkyForce:
         self.screen = pygame.display.set_mode((self.settings.screen_width,self.settings.screen_height))
         pygame.display.set_caption("SkyForce")
 
+        self.enemys = []
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
-        self.enemys = pygame.sprite.Group()
-        self._create_fleet()
-        self._check_events()
+        self._create_enemy()
         self.play_button = Button(self)
 
         self.game_active = False
+        self.score = 0
+        self.spawn_tick = 0
 
-    def _create_fleet(self):
-        enemy = Enemy(self)
-        enemy_distance = 0
-        for i in range(self.settings.enemy_count):
-            enemy  = Enemy(self)
-            enemy.rect.x = random.randint(enemy_distance, enemy_distance+128)
-            enemy.rect.y = random.randint(50,300)
-            self.enemys.add(enemy)
-            enemy_distance += 128
+        #处理数字
+        self.digits = []
+        for i in range(10):
+            self.digits.append(pygame.image.load(f'assets/images/digits/{i}.png').convert_alpha())
+        self.digit_w = self.digits[0].get_width()
+        self.digit_h = self.digits[0].get_height()
 
-    def _check_fleet_edges(self):
-        for enemy in self.enemys.sprites():
+    def _create_enemy(self):
+        new_enemy  = Enemy(self)
+        new_enemy.rect.x = random.randint(100, self.settings.screen_width - 100)
+        new_enemy.rect.y = random.randint(-300,0)
+        self.enemys.append(new_enemy)
+
+    def _check_enemys_edges(self):
+        for enemy in self.enemys:
             if enemy.check_edges():
-                self._change_fleet_direction()
-                break
-    
-    def _change_fleet_direction(self):
-        for enemy in self.enemys.sprites():
-            enemy.rect.y += self.settings.fleet_drop_speed
-        self.settings.fleet_direction *= -1
+                enemy.direction *= -1
+                continue
     
     def _check_events(self):
         for event in pygame.event.get():
@@ -94,20 +93,24 @@ class SkyForce:
         self.bullets.add(new_bullet)
 
 
-    def _update_aliens(self):
-        self._check_fleet_edges()
-        self.enemys.update()
+    def _update_enemy(self):
+        self._check_enemys_edges()
+        for enemy in self.enemys:
+            enemy.update()
 
-        for enemy in self.enemys.copy():
+        for enemy in self.enemys:
             if (self.ship.rect.x + self.ship.rect.width >= enemy.rect.x and self.ship.rect.x <= enemy.rect.x + enemy.rect.width and self.ship.rect.y + self.ship.rect.height >= enemy.rect.y and self.ship.rect.y <= enemy.rect.y + enemy.rect.height):
-                self.enemys.empty()
+                self.enemys.clear()
                 sleep(1)
                 self.game_active = False
-                self._create_fleet()
+                self._create_enemy()
                 self.ship.center_ship()
-            if (enemy.rect.bottom >= self.settings.screen_height):
-                self.game_active = False
-                sys.exit()
+                self.score = 0
+            if (enemy.rect.bottom >= self.settings.screen_height + 100):
+                self.enemys.remove(enemy)
+                self._create_enemy()
+                self._create_enemy()
+                self._create_enemy()       
 
         
 
@@ -120,7 +123,8 @@ class SkyForce:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
 
-        self.enemys.draw(self.screen)
+        for enemy in self.enemys:
+            self.screen.blit(enemy.image,enemy.rect)
 
         if not self.game_active:
             self.play_button.draw_button()
@@ -132,10 +136,11 @@ class SkyForce:
             if bullet.rect.bottom <=-100:
                 self.bullets.remove(bullet)
         for bullet in self.bullets.copy():
-            for enemy in self.enemys.copy():
+            for enemy in self.enemys:
                 if (bullet.rect.x + bullet.rect.width  >= enemy.rect.x and bullet.rect.x <= enemy.rect.x + enemy.rect.width and bullet.rect.y + bullet.rect.height >= enemy.rect.y and bullet.rect.y <= enemy.rect.y + enemy.rect.height):
                     self.bullets.remove(bullet)
                     self.enemys.remove(enemy)
+                    self.score += 2
                     break
 
     def run_game(self):
@@ -145,7 +150,11 @@ class SkyForce:
                 self.ship.update()
                 self.bullets.update()
                 self._update_bullets()
-                self._update_aliens()
+                self._update_enemy()
+                now = pygame.time.get_ticks()
+                if now - self.spawn_tick >= 1200:
+                    self._create_enemy()
+                    self.spawn_tick = now
             self._update_screen()
 
 
