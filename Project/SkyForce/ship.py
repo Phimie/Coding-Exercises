@@ -10,7 +10,7 @@ class Ship:
             图一多就掉帧；加了之后像素格式对齐，blit 变成纯内存拷贝，速度更快。"""
         self.frames = []
         for i in range(8):
-            self.frames.append(pygame.image.load(f'images/Sprite-000{i}.png').convert_alpha())
+            self.frames.append(pygame.image.load(f'images/ship/Sprite-000{i}.png').convert_alpha())
 
         self.image = self.frames[0]
 
@@ -23,6 +23,11 @@ class Ship:
         self.moving_left = False
         self.moving_up = False
         self.moving_down = False
+
+    def center_ship(self):
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)
+        self.y = float(self.rect.y)
 
     def update(self):
 
