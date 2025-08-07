@@ -126,6 +126,13 @@ class SkyForce:
         for enemy in self.enemys:
             self.screen.blit(enemy.image,enemy.rect)
 
+        
+        x = self.settings.screen_width - 10
+        for i in str(self.score):
+            img = self.digits[int(i)]
+            x -= img.get_width()
+            self.screen.blit(img, (x, 10))
+
         if not self.game_active:
             self.play_button.draw_button()
 
