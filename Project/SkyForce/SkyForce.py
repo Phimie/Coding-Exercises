@@ -19,6 +19,8 @@ class SkyForce:
         self.settings = Settings()
 
         self.screen = pygame.display.set_mode((self.settings.screen_width,self.settings.screen_height))
+        pygame.event.pump()
+        pygame.display.set_allow_screensaver(False)
         pygame.display.set_caption("SkyForce")
         pygame.display.set_icon(pygame.image.load(rpath.rpath("assets/images/icon/SF.ico")).convert_alpha())
         self.bg_img = pygame.image.load(rpath.rpath("assets/images/background/background.png")).convert()
@@ -72,7 +74,7 @@ class SkyForce:
                 self._check_play_button(mouse_x, mouse_y)
             if event.type == pygame.MOUSEBUTTONDOWN and self.game_active == True:
                 self._fire_bullet()
-    
+
     def _check_play_button(self, mouse_x, mouse_y):
         if self.play_button.rect.x < mouse_x and self.play_button.rect.x + self.play_button.width >= mouse_x and self.play_button.rect.y < mouse_y and self.play_button.rect.y + self.play_button.height >= mouse_y and not self.game_active:
             self.game_active = True
@@ -211,7 +213,6 @@ class SkyForce:
             self.screen.blit(img_bullet, (x_num, self.settings.screen_height - 56))
 
 
-
         #绘制得分
         x_score = self.settings.screen_width - 10
         for i in str(self.score)[::-1]:
@@ -221,7 +222,6 @@ class SkyForce:
 
         if not self.game_active:
             self.play_button.draw_button()
-
         pygame.display.flip()
         
 
@@ -239,7 +239,6 @@ class SkyForce:
                     self._create_enemy()
                     self.spawn_tick = now
             self._update_screen()
-
 
 #入口
 if __name__ == '__main__':
