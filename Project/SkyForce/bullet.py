@@ -12,6 +12,8 @@ class Bullet(Sprite):
         self.rect.midtop = sf_game.ship.rect.midtop
 
         self.y = float(self.rect.y)
+
+        self.damage = 51
     
     def update(self):
         self.y -= self.settings.bullet_speed

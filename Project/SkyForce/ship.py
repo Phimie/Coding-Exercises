@@ -11,7 +11,6 @@ class Ship:
         self.frames = []
         for i in range(8):
             self.frames.append(pygame.image.load(rpath.rpath(f'assets/images/ship/Sprite-000{i}.png')).convert_alpha())
-
         self.image = self.frames[0]
 
         self.rect = self.image.get_rect()
