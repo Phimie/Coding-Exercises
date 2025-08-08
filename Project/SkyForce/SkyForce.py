@@ -20,7 +20,7 @@ class SkyForce:
 
         self.screen = pygame.display.set_mode((self.settings.screen_width,self.settings.screen_height))
         pygame.display.set_caption("SkyForce")
-        pygame.display.set_icon(pygame.image.load("assets/images/icon/SF.ico").convert_alpha())
+        pygame.display.set_icon(pygame.image.load(rpath.rpath("assets/images/icon/SF.ico")).convert_alpha())
         self.bg_img = pygame.image.load(rpath.rpath("assets/images/background/background.png")).convert()
 
         self.enemys = []
