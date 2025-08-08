@@ -64,10 +64,6 @@ class SkyForce:
                 print (f"最后一局最大分数为:{self.max_score}\n")
                 print (f"历史最高最大分数为:{self.all_max_score}")
                 sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                self._check_keydown_events(event) 
-            elif event.type == pygame.KEYUP:
-                self._check_keyup_events(event)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 mouse_x, mouse_y = mouse_pos
@@ -78,28 +74,6 @@ class SkyForce:
     def _check_play_button(self, mouse_x, mouse_y):
         if self.play_button.rect.x < mouse_x and self.play_button.rect.x + self.play_button.width >= mouse_x and self.play_button.rect.y < mouse_y and self.play_button.rect.y + self.play_button.height >= mouse_y and not self.game_active:
             self.game_active = True
-
-    def _check_keydown_events(self, event):
-        if event.key == pygame.K_d:
-            self.ship.moving_right = True
-        if event.key == pygame.K_a:
-            self.ship.moving_left = True
-        if event.key == pygame.K_w:
-            self.ship.moving_up = True
-        if event.key == pygame.K_s:
-            self.ship.moving_down = True
-
-
-    
-    def _check_keyup_events(self, event):
-        if event.key == pygame.K_d:
-            self.ship.moving_right = False
-        if event.key == pygame.K_a:
-            self.ship.moving_left = False
-        if event.key == pygame.K_w:
-            self.ship.moving_up = False
-        if event.key == pygame.K_s:
-            self.ship.moving_down = False
 
     #bullet
     def _fire_bullet(self):

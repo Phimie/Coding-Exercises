@@ -18,10 +18,6 @@ class Ship:
 
         self.x = float(self.rect.x)
         self.y = float(self.rect.y)
-        self.moving_right = False
-        self.moving_left = False
-        self.moving_up = False
-        self.moving_down = False
         self.move_tick = 0
         
 
@@ -34,13 +30,14 @@ class Ship:
         self.image = self.frames[(pygame.time.get_ticks() // 40) % 8]
         now = pygame.time.get_ticks()
         if now - self.move_tick >= 2:
-            if self.moving_right and self.rect.right < self.screen_rect.right:
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_d] and self.rect.right < self.screen_rect.right:
                 self.x += self.settings.ship_speed
-            if self.moving_left and self.rect.left > 0:
+            if keys[pygame.K_a] and self.rect.left > 0:
                 self.x -= self.settings.ship_speed
-            if self.moving_up and self.rect.top > 0:
+            if keys[pygame.K_w] and self.rect.top > 0:
                 self.y -= self.settings.ship_speed
-            if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
+            if keys[pygame.K_s] and self.rect.bottom < self.screen_rect.bottom:
                 self.y += self.settings.ship_speed
             self.move_tick = now
 
