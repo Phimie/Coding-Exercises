@@ -1,12 +1,15 @@
 import sys
 import pygame
 import random
+import os
+import rpath
 from time import sleep
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
 from enemy import Enemy
 from button import Button
+
 
 
 class SkyForce:
@@ -31,9 +34,7 @@ class SkyForce:
         #处理数字
         self.digits = []
         for i in range(10):
-            self.digits.append(pygame.image.load(f'assets/images/digits/{i}.png').convert_alpha())
-        self.digit_w = self.digits[0].get_width()
-        self.digit_h = self.digits[0].get_height()
+            self.digits.append(pygame.image.load(rpath.rpath(f'assets/images/digits/{i}.png')).convert_alpha())
 
     def _create_enemy(self):
         new_enemy  = Enemy(self)
@@ -147,6 +148,7 @@ class SkyForce:
                     self.bullets.remove(bullet)
                     self.enemys.remove(enemy)
                     self.score += 2
+                    self._create_enemy()
                     break
 
     def run_game(self):

@@ -1,5 +1,5 @@
 import pygame
-
+import rpath
 class Ship:
     def __init__(self,sf_game):
         self.screen = sf_game.screen
@@ -10,7 +10,7 @@ class Ship:
             图一多就掉帧；加了之后像素格式对齐，blit 变成纯内存拷贝，速度更快。"""
         self.frames = []
         for i in range(8):
-            self.frames.append(pygame.image.load(f'assets/images/ship/Sprite-000{i}.png').convert_alpha())
+            self.frames.append(pygame.image.load(rpath.rpath(f'assets/images/ship/Sprite-000{i}.png')).convert_alpha())
 
         self.image = self.frames[0]
 

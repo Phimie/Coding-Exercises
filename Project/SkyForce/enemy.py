@@ -1,11 +1,12 @@
 import pygame
 import random
+import rpath
 class Enemy():
     def __init__(self, sf_game):
         super().__init__()
         self.screen = sf_game.screen
         self.settings = sf_game.settings
-        self.image = pygame.image.load ('assets/images/enemy/enemy.png').convert_alpha()
+        self.image = pygame.image.load (rpath.rpath('assets/images/enemy/enemy.png')).convert_alpha()
         self.rect = self.image.get_rect()
 
         self.rect.x = random.randint(100,self.settings.screen_width - self.rect.width)
