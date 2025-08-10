@@ -30,10 +30,10 @@ class Enemy:
         
         self.direction_change_timer = 0
         self.direction_change_interval = random.randint(1000, 3000)
-        
+        # 边界定义
         self.left_bound = self.screen_rect.centerx - 300
         self.right_bound = self.screen_rect.centerx + 300
-        self.top_bound = self.screen_rect.centery - 242
+        self.top_bound = self.screen_rect.centery - 300
         self.bottom_bound = self.screen_rect.centery + 320
         
         safe_spawn_options = [

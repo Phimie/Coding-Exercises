@@ -80,17 +80,17 @@ class Batmage:
         # 边界定义
         self.left_bound = self.screen_rect.centerx - 300
         self.right_bound = self.screen_rect.centerx + 300
-        self.top_bound = self.screen_rect.centery - 242
+        self.top_bound = self.screen_rect.centery - 300
         self.bottom_bound = self.screen_rect.centery + 320
 
     def _update_target(self):
         now_update_target = pygame.time.get_ticks()
         if now_update_target - self.update_target_tick >= 8000:
             self.target_x, self.target_y = random.choice([
-                [self.screen_rect.centerx + 390, self.screen_rect.centery + 400],
-                [self.screen_rect.centerx - 500, self.screen_rect.centery + 400],
-                [self.screen_rect.centerx + 390, self.screen_rect.centery - 430],
-                [self.screen_rect.centerx - 500, self.screen_rect.centery - 430]
+                [self.screen_rect.centerx + 490, self.screen_rect.centery + 400],
+                [self.screen_rect.centerx - 590, self.screen_rect.centery + 400],
+                [self.screen_rect.centerx + 490, self.screen_rect.centery - 530],
+                [self.screen_rect.centerx - 590, self.screen_rect.centery - 530]
             ])
             self.update_target_tick = now_update_target
 

@@ -44,10 +44,10 @@ class Bat:
         ])
         self.rect.x = self.spawn_xy[0]
         self.rect.y = self.spawn_xy[1]
-        
+        # 边界定义       
         self.left_bound = self.screen_rect.centerx - 300
         self.right_bound = self.screen_rect.centerx + 300
-        self.top_bound = self.screen_rect.centery - 242
+        self.top_bound = self.screen_rect.centery - 300
         self.bottom_bound = self.screen_rect.centery + 320
 
         self.speed = 200.0

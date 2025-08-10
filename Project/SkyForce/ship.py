@@ -79,7 +79,7 @@ class Ship:
     def update_movement(self, dt):
         self.position += self.velocity * dt
         self.rect.center = self.position
-        
+        # 边界定义
         left_bound = self.screen_rect.centerx - 310
         right_bound = self.screen_rect.centerx + 290
         top_bound = self.screen_rect.centery - 300

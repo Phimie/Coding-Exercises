@@ -5,17 +5,17 @@ class Settings:
         self.screen_width = 1600
         self.screen_height =1000
         #主体
-        self.ship_speed = 300
-        self.ship_hp = 500
-        self.ship_MaxHp = 200
+        self.ship_speed = 320
+        self.ship_hp = 418
+        self.ship_MaxHp = 418
         #子弹
-        self.bullet_speed = 2000
-        self.bullet_count = 20
+        self.bullet_speed = 2200
+        self.bullet_count = 35
 
         #Batmage
-        self.Batmage_speed = 200
+        self.Batmage_speed = 180
 
         #bat
-        self.bat_speed = 200
+        self.bat_speed = 160
 
 

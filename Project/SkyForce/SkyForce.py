@@ -244,7 +244,6 @@ class SkyForce:
             self.dead_bats.append(bat)
             self.bats.remove(bat)
             self.explode_channel.play(self.snd_explode)
-            print(f"现在还剩: {self.ship.hp} 点血量")
         else:
             self.ship.take_damage(51)
             self._handle_ship_death()
@@ -253,7 +252,6 @@ class SkyForce:
     def _create_batmage(self):
         new_batmage = Batmage(self)
         self.batmages.append(new_batmage)
-        print(f"生成了一个 Batmage，当前 Batmage 数量: {len(self.batmages)}")
         
     def _update_batmages(self, dt):
         for batmage in self.batmages:
@@ -287,7 +285,7 @@ class SkyForce:
             self.dead_enemies.append(enemy)
             self.enemies.remove(enemy)
             if self.score > 0:
-                self.score = max(0, self.score - 17)
+                self.score = max(0, self.score - 7)
             self.bullet_count += 3
             self.max_score = self.score
             self.explode_channel.play(self.snd_explode)
@@ -305,7 +303,7 @@ class SkyForce:
             if batmage.hp <= 0:
                 self._handle_batmage_death(None, batmage)
             if self.score > 0:
-                self.score = max(0, self.score - 50)
+                self.score = max(0, self.score - 8)
             self.bullet_count += 10
             self.max_score = self.score
             self.explode_channel.play(self.snd_explode)
