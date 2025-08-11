@@ -14,6 +14,9 @@ from bat import Bat
 from pygame.math import Vector2
 
 class SkyForce:
+    STATE_GAMERUNNING = 'gamerunning'
+    STATE_MAINMENU = 'mainmenu'
+    STATE_SETTING = 'setting'
     def __init__(self):
         pygame.init()
         self.settings = Settings()
@@ -26,7 +29,10 @@ class SkyForce:
         self.bg_img = pygame.image.load(rpath.rpath("assets/images/background/background.png")).convert_alpha()
         self.hp_img = pygame.image.load(rpath.rpath("assets/images/ship/hp.png")).convert_alpha()
         self.hpBar_img = pygame.image.load(rpath.rpath("assets/images/ship/hp_bar.png")).convert_alpha()
-
+        self.setting_ui_img = pygame.image.load(rpath.rpath("assets/images/button/settingUI.png")).convert_alpha()
+        
+        #游戏状态
+        self.game_state = self.STATE_MAINMENU
         # 游戏对象
         self.enemies = []
         self.dead_enemies = []
@@ -45,12 +51,17 @@ class SkyForce:
         # 子弹
         self.bullets = pygame.sprite.Group()
         
-        # 开始按钮
+        # Button相关
         self.play_button = Button(self)
+        self.setting_button = Button(self)
+        self.setting_button.rect.y = self.screen_rect.centery + 40
+        self.setting_button.image = pygame.image.load(rpath.rpath("assets/images/button/setting.png")).convert_alpha()
+        self.exit_button = Button(self)
+        self.exit_button.rect.y = self.screen_rect.centery + 120
+        self.exit_button.image = pygame.image.load(rpath.rpath("assets/images/button/exit.png")).convert_alpha()
 
         # 游戏数据
         self.game_run_times = 0
-        self.game_active = False
         self.score = 0
         self.max_score = 0
         self.all_max_score = 0
@@ -111,19 +122,42 @@ class SkyForce:
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                if not self.game_active:
+                if self.game_state == self.STATE_MAINMENU:
                     self._check_play_button(mouse_pos)
-                elif self.game_active:
+                    self._check_exit_button(mouse_pos)
+                    self._check_setting_button(mouse_pos)
+                elif self.game_state == self.STATE_GAMERUNNING:
                     self._fire_bullet()
-
+    #Button相关
     def _check_play_button(self, mouse_pos):
         mouse_x, mouse_y = mouse_pos
         button_rect = self.play_button.rect
         if (button_rect.x <= mouse_x <= button_rect.x + button_rect.width and
             button_rect.y <= mouse_y <= button_rect.y + button_rect.height and
-            not self.game_active and not self.dying):
-            self.game_active = True
+            self.game_state == self.STATE_MAINMENU and not self.dying):
+            self.game_state = self.STATE_GAMERUNNING
             self.snd_click.play()
+    def _check_setting_button(self, mouse_pos):
+        mouse_x, mouse_y = mouse_pos
+        button_rect = self.setting_button.rect
+        if (button_rect.x <= mouse_x <= button_rect.x + button_rect.width and
+            button_rect.y <= mouse_y <= button_rect.y + button_rect.height and
+            self.game_state == self.STATE_MAINMENU and not self.dying):
+            self.game_state = self.STATE_SETTING
+            self.snd_click.play()
+    def _check_exit_button(self, mouse_pos):
+        mouse_x, mouse_y = mouse_pos
+        button_rect = self.exit_button.rect
+        if (button_rect.x <= mouse_x <= button_rect.x + button_rect.width and
+            button_rect.y <= mouse_y <= button_rect.y + button_rect.height and
+            self.game_state == self.STATE_MAINMENU and not self.dying):
+            self.snd_click.play()
+            if self.max_score > self.all_max_score:
+                self.all_max_score = self.max_score
+            print(f"最后一局最大分数为: {self.max_score}")
+            print(f"历史最高最大分数为: {self.all_max_score}")
+            print(f"游戏局数为: {self.game_run_times}")
+            sys.exit()
 
     # 子弹相关
     def _fire_bullet(self):
@@ -314,7 +348,7 @@ class SkyForce:
     def _handle_ship_death(self):
         self.ship.take_damage(self.ship.hp)
         self.game_run_times += 1
-        self.game_active = False
+        self.game_state = self.STATE_MAINMENU
         self.wait_ship_death_over_tick = pygame.time.get_ticks()
         self.enemies.clear()
         self.bullets.empty()
@@ -322,10 +356,12 @@ class SkyForce:
         self.bats.clear()
         self.snd_gameover.play()
 
+    #主屏幕绘制
     def _update_screen(self):
-        self.screen.blit(self.bg_img, (0, -260))
-
-        if not self.ship.state == self.ship.STATE_DYING and self.game_active:
+        self.screen.blit(self.bg_img, (0, -260))        
+        if self.game_state == self.STATE_SETTING:
+            self.screen.blit(self.setting_ui_img,(self.screen_rect.centerx - 250,self.screen_rect.centery - 250))
+        if not self.ship.state == self.ship.STATE_DYING and self.game_state == self.STATE_GAMERUNNING:
             self.ship.blitme()
 
         now = pygame.time.get_ticks()
@@ -365,7 +401,7 @@ class SkyForce:
         for bullet in self.bullets.sprites():
             self.screen.blit(bullet.image, bullet.rect)
         
-        if self.game_active:
+        if self.game_state == self.STATE_GAMERUNNING:
             for enemy in self.enemies:
                 self.screen.blit(enemy.image, enemy.rect)
                 
@@ -400,8 +436,10 @@ class SkyForce:
                 x_score -= img.get_width()
                 self.screen.blit(img, (x_score, 10))
 
-        if not self.game_active and not self.dying:
+        if self.game_state == self.STATE_MAINMENU and not self.dying:
             self.play_button.draw_button()
+            self.setting_button.draw_button()
+            self.exit_button.draw_button()
 
         pygame.display.flip()
 
@@ -441,7 +479,7 @@ class SkyForce:
             
             self._check_events()
             
-            if self.game_active:
+            if self.game_state == self.STATE_GAMERUNNING:
                 self.ship.update(dt)
                 
                 self._update_bullets(dt)
@@ -461,7 +499,7 @@ class SkyForce:
                 
                 self._update_bats(dt)
                 
-            elif not self.game_active and self.game_run_times >= 1:
+            elif self.game_state == self.STATE_MAINMENU and self.game_run_times >= 1:
                 self._game_over(pygame.time.get_ticks())
             
             self._update_screen()
