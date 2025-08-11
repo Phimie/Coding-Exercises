@@ -5,7 +5,7 @@ import math
 from pygame.math import Vector2
 
 class Bat:
-    # 状态常量
+    # 状态常量   s
     STATE_MOVING = 'moving'
     STATE_HIT = 'hit'
     STATE_DYING = 'dying'
