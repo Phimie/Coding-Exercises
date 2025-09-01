@@ -1,0 +1,62 @@
+* {
+  /*所有元素*/
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f4f4;
+  transition: background 0.3s;
+}
+
+/* 卡片样式 */
+.card {
+  width: 300px;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s;
+}
+
+.card.light {
+  background: #ffffff;
+  color: #333333;
+}
+
+.card.dark {
+  background: #222222;
+  color: #ffffff;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.card.light button {
+  background: #e0e0e0;
+  color: #222;
+}
+
+.card.dark button {
+  background: #444;
+  color: #fff;
+}
+
+/* 响应式：手机竖屏时卡片宽度 90% */
+@media (max-width: 480px) {
+  .card {
+    width: 90%;
+  }
+}
