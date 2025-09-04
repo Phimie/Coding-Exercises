@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HTML+CSS+JS 小实例</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="device-width, initial-scale = 1.0">
+    <title>HTML+CSS+JavaScript测试2</title>
+    <link rel = "stylesheet" href="style.css">
 </head>
 <body>
-  <main class="wrapper">
-    <div id="card" class="card light">
-      <h1>Hello, JavaScript!</h1>
-      <p id="counter">已点击 0 次</p>
-      <button id="toggleBtn" type="button">切换主题</button>
-    </div>
-  </main>
-
-  <script src="main.js"></script>
+    <main class = "wrapper">
+        <div id="center-box" class="center-box">
+            <div id="card" class="card light">
+                <h1>Hello</h1>
+                <p id="counter">已点击 0 次</p>
+                <button id="toggleBtn" type="button">切换主题</button>
+            </div> 
+            <div id="displayTime" class="displayTime">
+                <h1>现在的时间是</h1>
+                <p id = "date">::</p>
+                <button id="gettimeBtn" type="button">获取时间</button>
+            </div>
+            <div id="guessNumber" class="guessNumber">
+                <h1>猜数字</h1>
+                <p id = "hint"></p>
+                <input id="numberinput"  type="number" placeholder="请输入1-100之间的整数">
+                <button id="submitBtn" type="button">提交</button>
+                <p id = "guessCount"></p>
+            </div>
+        </div>
+    </main>
+    <script src="main.js"></script>
 </body>
 </html>
