@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
     {
-        "name": "C++ Debug",
+        "name": "C++ 调试",
         "type": "cppdbg",
         "request": "launch",
         "program": "${fileDirname}/${fileBasenameNoExtension}.exe",
