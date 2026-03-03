@@ -4,7 +4,7 @@
         {
             "label": "C++ Build",
             "type": "shell",
-            "command": "C:/cygwin64/bin/g++.exe",
+            "command": "C:\\Program Files\\mingw64\\bin\\g++.exe",
             "args": [
                 "-g",
                 "-O0",
