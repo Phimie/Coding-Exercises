@@ -5,16 +5,15 @@ class Solution
 public:
     int maxDistance(std::vector<std::vector<int>> &arrays)
     {
-        int maxDistance = -1, minNum = INT_MAX, i = 0;
-        for (std::vector<int> array : arrays)
+        int ans = 0;
+        int min = INT_MAX / 2, max = INT_MIN / 2;
+        for (std::vector<int> a : arrays)
         {
-            for (int num : array)
-            {
-                minNum = std::min(minNum, num);
-                maxDistance = std::max(maxDistance, abs(num - minNum));
-            }
+            ans = std::max({ans, a.back() - min, max - a[0]});
+            min = std::min(min, a[0]);
+            max = std::max(max, a.back());
         }
-        return maxDistance;
+        return ans;
     }
 };
 
