@@ -20,3 +20,11 @@ public:
         return prefix[right + 1] - prefix[left];
     }
 };
+
+int main()
+{
+    std::vector<int> nums = {-2, 0, 3, -5, 2, -1};
+    NumArray numArray(nums);
+    std::cout << "sumRange(0, 2) = " << numArray.sumRange(0, 2);
+    return 0;
+}
