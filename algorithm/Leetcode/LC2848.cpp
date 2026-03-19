@@ -6,9 +6,22 @@ class Solution
 public:
     int numberOfPoints(std::vector<std::vector<int>> &nums)
     {
+        int diff[102] = {};
+        for (std::vector<int> car : nums)
+        {
+            diff[car[0]]++;
+            diff[car[1] + 1]--;
+        }
+        int count = 0, sum = 0;
+        for (int i = 1; i < 100; i++)
+        {
+            sum += diff[i];
+            if (sum > 0)
+                count++;
+        }
+        return count;
     }
 };
-
 int main()
 {
     Solution s1;
