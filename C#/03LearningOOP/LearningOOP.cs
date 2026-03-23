@@ -1,5 +1,5 @@
 ﻿using System;
-namespace LearningOOP
+namespace LearningOOP_part1
 {
     class GameObject
     {
@@ -202,16 +202,122 @@ namespace LearningOOP
         }
     }
 
-    class Tools
+    class Test
     {
         //普通类中的静态构造函数在使用的时候只会自动调用一次
-        static Tools()  //静态构造函数和普通构造函数可以同时存在,
+        static Test()  //静态构造函数和普通构造函数可以同时存在,
         {
 
         }
-        public Tools()  //普通构造函数
+        public Test()  //普通构造函数
         {
 
+        }
+    }
+
+    static class Tools  //拓展方法必须写在静态类中
+    {
+        public static void SpeakValue(this int value)  //拓展方法:可以在不修改原有类的基础上,为原有类添加新的方法,第一个参数必须使用this关键字修饰,并且参数类型(value)就是要拓展的类
+        {
+            Console.WriteLine("为int类型拓展方法测试,传入的值是{0}", value);
+        }
+
+        public static void SpeakValue(this string value, string name)  //拓展方法重载
+        {
+            Console.WriteLine("为string类型拓展方法测试,传入的值是{0},名字是{1}", value, name);
+        }
+
+        public static void Func3(this MyClass myClass)  //为自定义类拓展方法测试
+        {
+            Console.WriteLine("为MyClass类拓展方法测试,成员变量a的值是{0}", myClass.a);
+        }
+
+        public static void Func2(this MyClass myClass) //如果拓展方法和原有类中的方法重名,调用时会优先调用原有类中的方法,只有当原有类中没有这个方法时才会调用拓展方法
+        {
+            Console.WriteLine("这是拓展方法Func2");
+        }
+    }
+
+    partial class MyClass
+    {
+        public int a = 10;
+        public void Func1()
+        {
+            Console.WriteLine("MyClass的Func1方法");
+        }
+        public void Func2()
+        {
+            Console.WriteLine("MyClass的Func2方法");
+        }
+
+        class MyClassInner  //内部类,只能被外部类访问,不能被外部类实例化,只能被外部类的成员方法访问
+        {
+
+        }
+    }
+
+    partial class MyClass  //分部类,可以将一个类分成多个部分,分别写在不同的文件中,编译时会将这些部分合并成一个完整的类
+    {
+        public void Func4()
+        {
+            Console.WriteLine("MyClass的Func4方法");
+        }
+    }
+
+    class Point
+    {
+        private int x;
+        private int y;
+
+        public Point()
+        {
+
+        }
+
+        public Point(int x, int y) : this()
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        public static Point operator +(Point p1, Point p2)  //运算符重载:可以让自定义类的对象使用运算符进行运算,需要使用operator关键字重载对应的运算符
+        {
+            Point result = new Point();
+            result.x = p1.x + p2.x;
+            result.y = p1.y + p2.y;
+            return result;
+        }
+
+        public void Info()
+        {
+            Console.WriteLine("Point的坐标是({0},{1})", x, y);
+        }
+    }
+
+    class Father //子类可以继承父类的成员变量和成员方法,但是不能继承父类的构造函数和析构函数
+    {
+        public string name;
+
+        protected int age;  //protected修饰的成员只能被子类访问,不能被外部访问
+        public Father(string name)
+        {
+            this.name = name;
+        }
+        public void Speak()
+        {
+            Console.WriteLine("我是父类,我的名字是{0}", name);
+        }
+    }
+
+    class Son : Father
+    {
+        public Son(string name) : base(name)  //子类的构造函数需要调用父类的构造函数,使用base关键字调用
+        {
+
+        }
+        public void Speak()
+        {
+            Console.WriteLine("我是子类,我的名字是{0}", name);
         }
     }
 
@@ -220,38 +326,75 @@ namespace LearningOOP
         static void Main(string[] agrs)
         {
             //测试普通封装和类型
+            Console.WriteLine("--------- 开始测试普通封装和类型 ---------\n");
             GameObject A = new GameObject(2);
             GameObject B = A;
             B = null;
             Console.WriteLine(A.a); //与结构体不同,类是引用类型,B=null使栈上存的地址置为null,不影响A;
+            Console.WriteLine("\n--------- 结束测试普通封装和类型 ---------\n");
 
             //测试构造析构,GC
+            Console.WriteLine("--------- 开始测试构造析构,GC ---------\n");
             Person p1 = new Person("张三", 10, E_SexType.Man);
             p1.Speak("你好");
             p1.Info();
             p1 = null;
+            Console.WriteLine("\n--------- 结束测试构造析构,GC ---------\n");
 
             GC.Collect();  //手动触发垃圾回收GC的方法
 
             //测试成员属性
+            Console.WriteLine("--------- 开始测试成员属性 ---------\n");
             Person p2 = new Person();
             p2.Name = "测试成员属性";
             Console.WriteLine(p2.Name);
-
+            Console.WriteLine("\n--------- 结束测试成员属性 ---------\n");
 
             //测试索引器
+            Console.WriteLine("--------- 开始测试索引器 ---------\n");
             Student s1 = new Student();
             s1[0] = new Student("李四同学", 11);
             s1[0].Info();
+            Console.WriteLine("\n--------- 结束测试索引器 ---------\n");
 
             //测试静态成员
+            Console.WriteLine("--------- 开始测试静态成员 ---------\n");
             Student.Speak();
             Console.WriteLine(Student.PI);
+            Console.WriteLine("\n--------- 结束测试静态成员 ---------\n");
 
             //测试静态类
+            Console.WriteLine("--------- 开始测试静态类 ---------\n");
             Print.Write("测试静态类");
             Print.WriteLine("测试静态类");
+            Console.WriteLine("\n--------- 结束测试静态类 ---------\n");
 
+            //测试拓展方法
+            Console.WriteLine("--------- 开始测试拓展方法 ---------\n");
+            int n = 10;
+            n.SpeakValue(); //为int类型拓展方法测试,传入的值是10
+            string str = "测试";
+            str.SpeakValue("张三"); //为string类型拓展方法测试,传入的值是测试,名字是张三
+            MyClass myClass = new MyClass();
+            myClass.Func3();  //为MyClass类拓展方法测试,成员变量a的值是10
+            myClass.Func2();  //调用时会优先调用原有类中的方法,只有当原有类中没有这个方法时才会调用拓展方法,所以输出的是MyClass的Func2方法
+            Console.WriteLine("\n--------- 结束测试拓展方法 ---------\n");
+
+
+            //测试运算符重载
+            Console.WriteLine("--------- 开始测试运算符重载 ---------\n");
+            Point point1 = new Point(1, 2);
+            Point point2 = new Point(3, 4);
+            Point point3 = point1 + point2;  //运算符重载后,可以直接使用+运算符对Point类的对象进行运算
+            point3.Info();
+            Console.WriteLine("\n--------- 结束测试运算符重载 ---------\n");
+
+            //测试基本继承
+            Console.WriteLine("--------- 开始测试基本继承 ---------\n");
+            Son son = new Son("儿子");
+            son.Speak();  //输出的是子类重写的方法,所以输出的是我是子类,我的名字是儿子
+
+            Console.WriteLine("\n--------- 结束测试基本继承 ---------\n");
 
 
             Console.WriteLine("请按任意键继续");
