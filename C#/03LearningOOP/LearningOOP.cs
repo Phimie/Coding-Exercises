@@ -205,6 +205,32 @@ namespace LearningOOP_part1
     class Test
     {
         //普通类中的静态构造函数在使用的时候只会自动调用一次
+        public int i = 1;
+        public Test2 t2 = new Test2();
+        public Test Clone()
+        {
+            return this.MemberwiseClone() as Test;  //MemberwiseClone方法 用于创建一个对象的浅拷贝,但是新对象中的引用变量会和老对象中一致
+        }
+
+        public override bool Equals(object obj)  //重写Equals方法 用于比较两个对象的内容是否相等,默认是比较两个对象的引用地址
+        {
+            if (obj is Test)
+            {
+                Test test = obj as Test;
+                return this.i == test.i;  //比较两个对象的内容是否相等,这里比较的是i的值
+            }
+            return false;
+        }
+
+        public override int GetHashCode()  //重写GetHashCode方法 用于根据对象的内容生成哈希码,默认是根据对象的引用地址生成的
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()  //重写ToString方法 用于返回对象的内容的字符串表示,默认是返回对象的类型名称
+        {
+            return string.Format("Test类的i的值是{0}", i);
+        }
         static Test()  //静态构造函数和普通构造函数可以同时存在,
         {
 
@@ -213,6 +239,11 @@ namespace LearningOOP_part1
         {
 
         }
+    }
+
+    class Test2()
+    {
+        public int i = 2;
     }
 
     static class Tools  //拓展方法必须写在静态类中
@@ -569,6 +600,38 @@ namespace LearningOOP_part1
             circle.Draw();
 
             Console.WriteLine("\n--------- 结束测试多态vob,抽象函数,接口 ---------\n");
+
+            Console.WriteLine("--------- 重新测试object,浅拷贝 ---------\n");
+            Console.WriteLine(object.Equals(1, 1));  //object类中的Equals方法 用于比较两个对象是否相等,默认是比较两个对象的引用地址,如果要比较两个对象的内容是否相等,需要重写Equals方法
+            Test test1 = new Test();
+            Test test2 = new Test();
+            Console.WriteLine(object.Equals(test1, test2));  //默认比较的是两个对象的引用地址,所以返回false
+            Test test3 = test1;
+            Console.WriteLine(object.ReferenceEquals(test1, test3));  //ReferenceEquals方法 用于比较两个对象的引用地址,如果是同一个对象返回true,否则返回false
+
+            //GetType
+            Console.WriteLine(test1.GetType());  //GetType方法 用于获取一个对象的类型,返回一个Type类型的对象
+
+            //MemberwiseClone
+            Test test4 = test1.Clone();  //MemberwiseClone方法 用于创建一个对象的浅拷贝,但是新对象中的引用变量会和老对象中一致
+            Console.WriteLine(object.ReferenceEquals(test1, test4));  //返回false,因为test4是test1的浅拷贝,所以test4和test1不是同一个对象
+            Console.WriteLine(object.ReferenceEquals(test1.t2, test4.t2));  //返回true,因为test4是test1的浅拷贝,所以test4和test1中的t2引用变量指向同一个对象
+
+            //静态方法Equals
+            Console.WriteLine(Test.Equals(test1, test2));  //返回true,因为在Test类中重写了Equals方法,比较的是两个对象的内容是否相等,这里比较的是i的值,所以返回true
+            Console.WriteLine(Test.Equals(test1, test3));  //返回true,因为test1和test3是同一个对象
+
+            //虚方法GetHashCode
+            Console.WriteLine(test1.GetHashCode());  //GetHashCode方法 用于获取一个对象的哈希码,默认是根据对象的引用地址生成的,如果要根据对象的内容生成哈希码,需要重写GetHashCode方法
+            Console.WriteLine(test2.GetHashCode());  //返回不同的哈希码,因为test2和test1的内容不同
+
+
+            //虚方法ToString
+            Console.WriteLine(test1.ToString());  //ToString方法 用于返回一个对象的字符串表示,默认是返回对象的类型名称,如果要返回对象的内容的字符串表示,需要重写ToString方法,这里返回的是Test类的i的值
+
+
+
+            Console.WriteLine("--------- 结束测试object,浅拷贝 ---------\n");
 
 
 
