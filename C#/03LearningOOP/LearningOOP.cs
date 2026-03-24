@@ -315,9 +315,125 @@ namespace LearningOOP_part1
         {
 
         }
-        public void Speak()
+        public void SonSpeak()
         {
             Console.WriteLine("我是子类,我的名字是{0}", name);
+        }
+    }
+
+    class Monster
+    {
+        protected int hp;
+    }
+
+    class Boss : Monster
+    {
+        public void Skill()
+        {
+            Console.WriteLine("boss释放技能");
+        }
+    }
+
+    class Goblin : Monster
+    {
+        public void Attack()
+        {
+            Console.WriteLine("goblin攻击");
+        }
+    }
+
+    //密封类:被sealed修饰的类,不能被继承,但是可以被实例化,通常用于一些工具类或者一些不需要被继承的类
+    sealed class NotHaveSon
+    {
+
+    }
+
+    //测试多态
+    class Animal
+    {
+        public string name;
+
+        public Animal(string name)
+        {
+            this.name = name;
+        }
+        public virtual void Speak()  //虚函数:使用virtual关键字修饰的方法可以被子类重写,实现多态
+        {
+            Console.WriteLine("动物叫");
+        }
+    }
+
+    class Dog : Animal
+    {
+
+        public Dog(string name) : base(name)
+        {
+        }
+
+        public override void Speak()  //使用override关键字修饰的方法是对父类方法的重写,实现多态
+        {
+            base.Speak();  //通过base保留调用父类的Speak方法
+            Console.WriteLine("狗叫");
+        }
+    }
+
+    //抽象类
+    abstract class Thing  //被abstract修饰的类,不能被实例化,只能被继承,通常用于一些需要被继承的类,比如动物类,植物类等
+    {
+        public abstract void DoSomething();  //抽象方法:没有方法体,需要在子类中重写,实现多态
+    }
+
+    class Book : Thing
+    {
+        public override void DoSomething()  //重写抽象方法,实现多态
+        {
+            Console.WriteLine("书籍可以被阅读");
+        }
+    }
+
+    //接口
+    interface IShape  //接口:定义了一组方法,但是没有方法体,需要在实现类中实现,通常用于一些需要被实现的类,比如圆形类,矩形类等
+    {
+        void Draw();  //接口中的方法默认是public abstract的,所以不需要使用abstract关键字修饰
+        string Name //接口中的属性
+        {
+            get;
+            set;
+        }
+
+        int this[int index]  //接口中的索引器
+        {
+            get;
+            set;
+        }
+
+        event Action OnDraw;  //接口中的事件
+    }
+
+    class Shape { }
+
+    class Circle : Shape, IShape  //一个类可以实现多个接口,需要使用逗号分隔
+    {
+        public string Name { get; set; }
+
+        public int this[int index]
+        {
+            get
+            {
+                return 0;
+            }
+            set
+            {
+
+            }
+        }
+
+        public event Action OnDraw;
+
+        public void Draw()
+        {
+            Console.WriteLine("画一个圆");
+            OnDraw?.Invoke();  //触发事件
         }
     }
 
@@ -391,10 +507,70 @@ namespace LearningOOP_part1
 
             //测试基本继承
             Console.WriteLine("--------- 开始测试基本继承 ---------\n");
-            Son son = new Son("儿子");
-            son.Speak();  //输出的是子类重写的方法,所以输出的是我是子类,我的名字是儿子
+            Son son1 = new Son("儿子");
+            son1.SonSpeak();
 
             Console.WriteLine("\n--------- 结束测试基本继承 ---------\n");
+
+            //测试里氏替换原则,is as, object
+            Console.WriteLine("--------- 测试里氏替换原则,is as, object ---------\n");
+            Father son2 = new Son("测试"); //用父类容器 装载子类对象
+            if (son2 is Son)  //is关键字 用于判断一个对象是否是某个类型的实例,如果是返回true,否则返回false
+            {
+                (son2 as Son).SonSpeak();  //将父类对象转换为子类对象,调用子类方法   //as关键字 用于将一个对象转换为某个类型的实例,如果转换成功返回该类型的对象,否则返回null
+            }
+
+
+            Random random = new Random();
+            int randomNum;
+            Monster[] monsters = new Monster[10];
+            for (int i = 0; i < monsters.Length; i++)
+            {
+                randomNum = random.Next(0, 4);
+                if (randomNum == 0)
+                {
+                    monsters[i] = new Boss();
+                }
+                else
+                {
+                    monsters[i] = new Goblin();
+                }
+            }
+            for (int i = 0; i < monsters.Length; i++)
+            {
+                if (monsters[i] is Boss)
+                {
+                    (monsters[i] as Boss).Skill();
+                }
+                else if (monsters[i] is Goblin)
+                {
+                    (monsters[i] as Goblin).Attack();
+                }
+            }
+
+            object obj = new Son("测试");  //object是所有类的父类,所以可以用object类型的变量来接收任何类型的对象,但是只能调用object类中的方法,如果要调用子类的方法,需要先将object类型的变量转换为子类类型
+            if (obj is Son)
+            {
+                (obj as Son).SonSpeak();
+            }
+
+
+            Console.WriteLine("--------- 结束测试里氏替换原则,is as, object ---------\n");
+
+            //测试多态
+            Console.WriteLine("--------- 测试多态vob,抽象函数,接口 ---------\n");
+            Animal animal = new Dog("旺财");
+            animal.Speak();  //调用的是Dog类重写的Speak方法,实现了多态
+
+            Thing book = new Book();
+            book.DoSomething();
+
+            IShape circle = new Circle();
+            circle.Draw();
+
+            Console.WriteLine("\n--------- 结束测试多态vob,抽象函数,接口 ---------\n");
+
+
 
 
             Console.WriteLine("请按任意键继续");
