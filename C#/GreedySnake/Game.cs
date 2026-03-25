@@ -45,6 +45,7 @@ namespace GreedySnake
                     nowScene = new GameScene();
                     break;
                 case E_SceneType.End:
+                    nowScene = new EndScene();
 
                     break;
             }

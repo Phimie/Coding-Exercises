@@ -5,7 +5,7 @@ namespace GreedySnake
     {
         public EndScene()
         {
-            strTitle = "贪吃蛇";
+            strTitle = "游戏结束";
             strOne = "回到主界面";
         }
         public override void EnterSpaceDoSomething()

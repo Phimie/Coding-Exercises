@@ -3,7 +3,7 @@ namespace GreedySnake
 {
     class Map : IDraw
     {
-        private MapWall[] mapWalls;
+        public MapWall[] mapWalls;
         public Map()
         {
             mapWalls = new MapWall[Game.w + (Game.h - 3) * 2];

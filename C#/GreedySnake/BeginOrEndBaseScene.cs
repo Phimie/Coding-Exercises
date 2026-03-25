@@ -11,7 +11,7 @@ namespace GreedySnake
         public abstract void EnterSpaceDoSomething();
         public void Update()
         {
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.SetCursorPosition(Game.w / 2 - strTitle.Length, 5);
             Console.Write(strTitle);
 

@@ -10,8 +10,10 @@ namespace GreedySnake
     }
     class Snake : IDraw
     {
-        SnakeBody[] snakeBodies;
-        int nowSnakeLength;
+        public SnakeBody[] snakeBodies;
+        public int nowSnakeLength;
+
+        private Position lastTailPos;
 
         E_MoveDirection moveDirection;
         public Snake(int x, int y)
@@ -32,17 +34,22 @@ namespace GreedySnake
 
         public void Move()
         {
-            SnakeBody lastBody = snakeBodies[nowSnakeLength - 1];
-            Console.SetCursorPosition(lastBody.pos.x, lastBody.pos.y);
+            lastTailPos = snakeBodies[nowSnakeLength - 1].pos;
+            Console.SetCursorPosition(lastTailPos.x, lastTailPos.y);
             Console.Write("  ");
+
+            for (int i = nowSnakeLength - 1; i > 0; i--)
+            {
+                snakeBodies[i].pos = snakeBodies[i - 1].pos;
+            }
 
             switch (moveDirection)
             {
                 case E_MoveDirection.Up:
-                    snakeBodies[0].pos.y--;
+                    --snakeBodies[0].pos.y;
                     break;
                 case E_MoveDirection.Down:
-                    snakeBodies[0].pos.y++;
+                    ++snakeBodies[0].pos.y;
                     break;
                 case E_MoveDirection.Left:
                     snakeBodies[0].pos.x -= 2;
@@ -51,6 +58,7 @@ namespace GreedySnake
                     snakeBodies[0].pos.x += 2;
                     break;
             }
+
         }
 
         public void ChangeDirection(E_MoveDirection newDirection)
@@ -64,6 +72,52 @@ namespace GreedySnake
                 return;
             }
             moveDirection = newDirection;
+        }
+
+        public bool CheckEnd(Map map)
+        {
+            for (int i = 0; i < map.mapWalls.Length; i++)
+            {
+                if (snakeBodies[0].pos == map.mapWalls[i].pos)
+                {
+                    return true;
+                }
+            }
+            for (int i = 1; i < nowSnakeLength; i++)
+            {
+                if (snakeBodies[0].pos == snakeBodies[i].pos)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool CheckSamePos(Position pos)
+        {
+            for (int i = 0; i < nowSnakeLength; i++)
+            {
+                if (snakeBodies[i].pos == pos)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void CheckEatFood(Food food)
+        {
+            if (snakeBodies[0].pos == food.pos)
+            {
+                food.RandomPosition(this);
+                AddBody();
+            }
+        }
+
+        public void AddBody()
+        {
+            snakeBodies[nowSnakeLength] = new SnakeBody(lastTailPos.x, lastTailPos.y, E_SnakeBodyType.Body);
+            nowSnakeLength++;
         }
 
 
