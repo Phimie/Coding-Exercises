@@ -33,6 +33,12 @@ namespace LearningDictionary
                 Console.WriteLine("Key 'Hello' does not exist.");
             }
 
+            //遍历
+            foreach (KeyValuePair<string, string> kvp in myDictionary)  //KeyValuePair<TKey, TValue> 是一个结构体，表示字典中的一个键值对
+            {
+                Console.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
+            }
+
 
 
 
